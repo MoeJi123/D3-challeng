@@ -78,7 +78,7 @@ function renderYAxes(newYscale, yAxis) {
 function renderXCircles(circlesGroup, newXscale, chosenXAxis) {
   
     circlesGroup.transition()
-                .duration(1000)
+                .duration(500)
                 .attr('cx', d => newXscale(d[chosenXAxis]));
   
     return circlesGroup;
@@ -87,7 +87,7 @@ function renderXCircles(circlesGroup, newXscale, chosenXAxis) {
 function renderYCircles(circlesGroup, newYscale, chosenYAxis) {
   
     circlesGroup.transition()
-                .duration(1000)
+                .duration(500)
                 .attr('cy', d => newYscale(d[chosenYAxis]));
       
     return circlesGroup;
@@ -152,10 +152,14 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   circlesGroup.call(toolTip);
   
   circlesGroup.on('mouseover', function(data) {
-                  toolTip.show(data);
+                  toolTip.show(data)
+                  .transition()
+                  .duration(1500);
                   })      
               .on('mouseout', function(data,index) {
-                  toolTip.hide(data);
+                  toolTip.hide(data)
+                  .transition()
+                  .duration(500);
                   });
   
   return circlesGroup; 
@@ -202,7 +206,7 @@ d3.csv('assets/data/data.csv').then(function(healthdata, err) {
                               .attr('class', 'stateCircle')
                               .attr('cx', d => xLinearScale(d[chosenXAxis]))
                               .attr('cy', d => yLinearScale(d[chosenYAxis]))
-                              .attr('r', 15)
+                              .attr('r', 17)
 
   
   var textLabels = chartGroup.selectAll('.stateText')
@@ -342,7 +346,7 @@ d3.csv('assets/data/data.csv').then(function(healthdata, err) {
                   console.log(chosenYAxis)
   
                   //update y scale with chosen data 
-                  yLinearScale = yScale(data, chosenYAxis);
+                  yLinearScale = yScale(healthdata, chosenYAxis);
   
                   //update y axis 
                   yAxis = renderYAxes(yLinearScale, yAxis);
